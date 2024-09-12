@@ -34,6 +34,8 @@ usage: nxtheme-creator [-h] [--input INPUT] [--output OUTPUT] [--config CONFIG] 
 - `--output OUTPUT`: Define the directory where the generated theme files will be saved.
 - `--config CONFIG`: Provide an optional configuration file (`conf.json`) to customize layout settings.
 
+___
+
 - [Documentation](#documentation)
 - [Install With PIP](#install-with-pip)
 - [Language information](#language-information)
