@@ -7,7 +7,7 @@ This tutorial will guide you through using the `nxtheme-creator` tool to generat
 
 install with python-pip nxtheme-creator
 
-```
+```sh
 python3 -m pip install
 ```
 
@@ -15,7 +15,7 @@ python3 -m pip install
 
 **Create an Input Directory**: Organize your images in a directory. The directory structure should look like this:
 
-```
+```sh
 themes_directory/
 ├── theme1/
 │   ├── home.jpg
@@ -65,12 +65,12 @@ Note that items ["home", "lock", "apps", "set", "user", "news"] are configured w
 Open your terminal or command prompt and run the following command to generate your theme:
 
 ```bash
-python3 -m nxtheme-creator --nxtheme /path/to/nxtheme.exe --input input_directory --output output_directory --config conf.json
+python3 -m nxtheme-creator --nxtheme /path/to/SwitchThemes.exe --input input_directory --output output_directory --config conf.json
 ```
 
 Replace:
 
-- `/path/to/nxtheme.exe` with the path to the `nxtheme` executable.
+- `/path/to/SwitchThemes.exe` with the path to the `nxtheme` executable.
 - `input_directory` with the path to your images. This defaults to the directory you run `nxtheme-creator` from
 - `output_directory` with the directory where you want to save the generated theme files.This defaults to `./output/`
 - `conf.json` with the path to your configuration file. Note this is optional, though needed if you wish to customise the layouts or set an `author_name`
@@ -79,7 +79,7 @@ Replace:
 
 Assuming you have the following setup:
 
-- `nxtheme.exe` located at `/path/to/nxtheme.exe`
+- `SwitchThemes.exe` located at `/path/to/SwitchThemes.exe`
 - Input directory is `./input_images`
 - Output directory is `./themes`
 - Configuration file is `./conf.json`
@@ -87,7 +87,7 @@ Assuming you have the following setup:
 Run the command:
 
 ```bash
-python3 -m nxtheme-creator --nxtheme /path/to/nxtheme.exe --input ./input_images --output ./themes --config ./conf.json
+python3 -m nxtheme-creator --nxtheme /path/to/SwitchThemes.exe --input ./input_images --output ./themes --config ./conf.json
 ```
 
 ## **Step 5: Verify and Install Your Theme**
@@ -99,4 +99,4 @@ python3 -m nxtheme-creator --nxtheme /path/to/nxtheme.exe --input ./input_images
 ## **Troubleshooting**
 
 - **Missing Images**: Ensure all required images are present and correctly named in your input directory.
-- **Executable Issues**: Make sure the path to `nxtheme.exe` is correct and that you have the necessary permissions to run it.
+- **Executable Issues**: Make sure the path to `SwitchThemes.exe` is correct and that you have the necessary permissions to run it.

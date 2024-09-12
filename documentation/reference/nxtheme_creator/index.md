@@ -10,7 +10,7 @@
 
 ## cli
 
-[Show source in __init__.py:14](../../../nxtheme_creator/__init__.py#L14)
+[Show source in __init__.py:17](../../../nxtheme_creator/__init__.py#L17)
 
 Cli entry point.
 

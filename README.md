@@ -12,6 +12,28 @@
 
 <img src="readme-assets/icons/name.png" alt="Project Icon" width="750">
 
+Generate custom themes for your Nintendo Switch from your images, with optional
+configuration for layout adjustments. Specify the path to the `nxtheme` executable
+and provide the directory for your input images, output files, and an optional
+configuration file.
+
+**Usage**:
+
+```bash
+usage: nxtheme-creator [-h] [--input INPUT] [--output OUTPUT] [--config CONFIG] nxtheme
+```
+
+**Arguments**:
+
+- `nxtheme`: The path to the `nxtheme` executable (e.g., `/path/to/SwitchThemes.exe`). This can be obtained from [SwitchThemeInjector](https://github.com/exelix11/SwitchThemeInjector).
+
+**Options**:
+
+- `-h, --help`: Show help message and exit.
+- `--input INPUT`: Specify the directory containing your input images.
+- `--output OUTPUT`: Define the directory where the generated theme files will be saved.
+- `--config CONFIG`: Provide an optional configuration file (`conf.json`) to customize layout settings.
+
 - [Documentation](#documentation)
 - [Install With PIP](#install-with-pip)
 - [Language information](#language-information)
@@ -41,8 +63,8 @@ where to look for certain things:
 - The [Technical Reference](/documentation/reference) documents APIs and other aspects of the
   machinery. This documentation describes how to use the classes and functions at a lower level
   and assume that you have a good high-level understanding of the software.
-- The [Help](/documentation/help) guide provides a starting point and outlines common issues that you
-  may have.
+<!-- - The [Help](/documentation/help) guide provides a starting point and outlines common issues that you
+  may have. -->
 
 ## Install With PIP
 
