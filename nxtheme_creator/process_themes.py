@@ -59,9 +59,16 @@ def walkfiletree(inputdir: str) -> dict:
 				screen_types = re.match(r"(\w+(,\w+)*)", file).group(1)
 
 				# Split by comma and map each screen type to the image path
+				top_level_theme = False
 				for screen_type in screen_types.split(","):
 					if screen_type in SCREEN_TYPES:
 						theme_image_map[theme_name][screen_type] = os.path.join(root, file)
+					else:
+						top_level_theme = True
+				if top_level_theme:
+					theme_image_map[screen_types] = {}
+					for default_screen_type in SCREEN_TYPES:
+						theme_image_map[screen_types][default_screen_type] = os.path.join(root, file)
 
 	return theme_image_map
 
@@ -124,6 +131,8 @@ def processImages(nxthemebin: str, inputdir: str, outputdir: str, config: dict) 
 	for theme_name, theme in themeimgmap.items():
 		for component_name, image_path in theme.items():
 			name = f"{theme_name}_{component_name}"
+			out = f"{outputdir}/{theme_name}/{name}.nxtheme"
+			print(f"Processing '{out}' ...")
 			(Path(outputdir) / theme_name).mkdir(exist_ok=True, parents=True)
 			cmd = [
 				nxthemebin,
@@ -133,7 +142,7 @@ def processImages(nxthemebin: str, inputdir: str, outputdir: str, config: dict) 
 				config.get(component_name) or "",
 				f"name={name}",
 				f"author={author_name}",
-				f"out={outputdir}/{theme_name}/{name}.nxtheme",
+				f"out={out}",
 			]
 			if os.name != "nt":  # Not Windows, so run with mono
 				cmd = ["mono"] + cmd

@@ -23,7 +23,7 @@ def cli() -> None:  # pragma: no cover
 		help="Nxtheme command to use. eg /path/to/SwitchThemes.exe, obtain from https://github.com/exelix11/SwitchThemeInjector",
 	)
 	parser.add_argument("--input", help="input directory", default=".")
-	parser.add_argument("--output", help="output directory", default="./output/")
+	parser.add_argument("--output", help="output directory", default="./output")
 	parser.add_argument("--config", help="conf.json")
 
 	args = parser.parse_args()
