@@ -1,0 +1,88 @@
+[tool.poetry]
+name = "nxtheme_creator"
+version = "2024"
+license = "mit"
+description = ""
+authors = ["FredHappyface"]
+classifiers = [
+	"Development Status :: 4 - Beta",
+	"Intended Audience :: Developers",
+	"Intended Audience :: Education",
+	"Natural Language :: English",
+	"Operating System :: Microsoft :: Windows",
+	"Programming Language :: Python :: Implementation :: CPython",
+	"Topic :: Software Development :: Libraries :: Python Modules",
+	"Topic :: Utilities"
+]
+homepage = "https://github.com/FHPythonUtils/nxtheme-creator"
+repository = "https://github.com/FHPythonUtils/nxtheme-creator"
+documentation = "https://github.com/FHPythonUtils/nxtheme-creator/blob/master/README.md"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+
+[tool.poetry.scripts]
+nxtheme_creator = 'nxtheme_creator:cli'
+
+[tool.poetry.group.dev.dependencies]
+imgcompare = "^2.0.1"
+pytest = "^8.1.1"
+handsdown = "^2.1.0"
+coverage = "^7.4.4"
+ruff = "^0.3.3"
+pyright = "^1.1.354"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 100
+indent-width = 4
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+	"ANN101",  # type annotation for self in method
+	"COM812",  # enforce trailing comma
+	"D2",  # pydocstyle formatting
+	"ISC001",
+	"N",  # pep8 naming
+	"PLR09",  # pylint refactor too many
+	"TCH",  # type check blocks
+	"W191"  # ignore this to allow tabs
+]
+fixable = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/{tests,docs,tools}/*" = ["D", "S101", "E402"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all" # Disallow all relative imports.
+
+[tool.ruff.format]
+indent-style = "tab"
+docstring-code-format = true
+line-ending = "lf"
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+env_list =
+	py311
+	py310
+	py39
+	py38
+
+[testenv]
+deps =
+	pytest
+	imgcompare
+commands = pytest tests
+"""
