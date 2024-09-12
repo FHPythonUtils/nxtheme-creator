@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nxtheme_creator"
-version = "2024"
+version = "2024.0.1"
 license = "mit"
 description = ""
 authors = ["FredHappyface"]

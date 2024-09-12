@@ -13,12 +13,12 @@
 
 [Show source in process_themes.py:101](../../../nxtheme_creator/process_themes.py#L101)
 
-   Process images from the specified input directory to generate Nintendo Switch themes. This
-function handles the following tasks:
-   1. Walks through the input directory to collect images and associate them with themes.
-   2. Resolves and validates configuration paths for layout files.
-   3. Iterates over each theme and its components, and builds the theme files using the `nxtheme`
-executable.
+Process images from the specified input directory to generate Nintendo Switch themes. This
+    function handles the following tasks:
+1. Walks through the input directory to collect images and associate them with themes.
+2. Resolves and validates configuration paths for layout files.
+3. Iterates over each theme and its components, and builds the theme files using the `nxtheme`
+    executable.
 
 #### Arguments
 
@@ -53,10 +53,10 @@ If the files are still not found, it tries to append `.json` to the filenames an
 
 #### Arguments
 
-   - `nxthemebin` *str* - The path to the `nxtheme` executable, used to locate the default
-`Layouts` directory.
-   - `conf` *dict* - A dictionary containing layout configuration. The keys should be screen types
-(e.g., 'home', 'lock') and the values should be file paths or filenames.
+- `nxthemebin` *str* - The path to the `nxtheme` executable, used to locate the default
+    `Layouts` directory.
+- `conf` *dict* - A dictionary containing layout configuration. The keys should be screen types
+    (e.g., 'home', 'lock') and the values should be file paths or filenames.
 
 #### Returns
 
@@ -87,8 +87,8 @@ theme names and corresponding images for each component.
 Type: *dict*
 the final theme_image_map
 
-**Example**:
-   Given the following directory structure:
+    **Example**:
+Given the following directory structure:
 
 ```
 input_directory/
