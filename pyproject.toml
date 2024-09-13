@@ -2,7 +2,7 @@
 name = "nxtheme_creator"
 version = "2024.1"
 license = "gpl-2.0-or-later"
-description = " tool for making custom Nintendo Switch themes using `SwitchThemes.exe` with images, and a simple config"
+description = "Tool for making custom Nintendo Switch themes using `SwitchThemes.exe` with images, and a simple config"
 authors = ["FredHappyface"]
 classifiers = [
 	"Development Status :: 4 - Beta",
