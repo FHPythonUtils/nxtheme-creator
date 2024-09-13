@@ -1,9 +1,11 @@
-"""Get info on supported image types, to perform checks on"""
+"""Get info on supported image types, to perform checks on."""
+
+from __future__ import annotations
 
 import struct
 
 
-def get_jpeg_info(jpeg: bytes):
+def get_jpeg_info(jpeg: bytes) -> tuple[int, int, bool]:
 	SOF0 = b"\xff\xc0"
 	SOF2 = b"\xff\xc2"
 
@@ -27,9 +29,10 @@ def get_jpeg_info(jpeg: bytes):
 	return 0, 0, False
 
 
-def get_dds_info(dds: bytes):
+def get_dds_info(dds: bytes) -> tuple[int, int, bool]:
 	if dds[:4] != b"DDS ":
-		raise ValueError("Not a valid DDS file.")
+		msg = "Not a valid DDS file."
+		raise ValueError(msg)
 
 	# Unpack the relevant parts of the header
 	# Width and height are at offsets 12 and 16, FourCC at offset 84

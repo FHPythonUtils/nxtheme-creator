@@ -140,14 +140,13 @@ def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config:
 	themeimgmap = walkfiletree(inputdir=inputdir)
 	config = resolveConf(nxthemebin, conf=config)
 
-	theme_name = config.get("theme_name") or "MyCustomTheme"
 	author_name = config.get("author_name") or "JohnDoe"
 
 	for theme_name, theme in themeimgmap.items():
 		for component_name, image_path in theme.items():
-			name = f"{theme_name}_{component_name}"
-			out = f"{outputdir}/{theme_name}/{name}.nxtheme"
-			print(f"Processing '{out}' ...")
+			full_theme_name = f"{theme_name}_{component_name}"
+			out = f"{outputdir}/{theme_name}/{full_theme_name}.nxtheme"
+			print(f"Processing '{out}' ...")  # noqa: T201
 
 			(Path(outputdir) / theme_name).mkdir(exist_ok=True, parents=True)
 
@@ -156,8 +155,8 @@ def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config:
 					nxthemebin=nxthemebin,
 					component_name=component_name,
 					image_path=image_path,
-					config=config,
-					name=name,
+					layout_path=config.get(component_name) or "",
+					theme_name=full_theme_name,
 					author_name=author_name,
 					out=out,
 				)
@@ -166,8 +165,8 @@ def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config:
 				sarc_tool.execute(
 					component_name=component_name,
 					image_path=image_path,
-					config=config,
-					name=name,
+					layout_path=config.get(component_name),
+					theme_name=full_theme_name,
 					author_name=author_name,
 					out=out,
 				)
