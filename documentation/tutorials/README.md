@@ -56,7 +56,7 @@ Create or modify a `conf.json` file in the root directory of `nxtheme-creator`. 
 
 ```
 
-Note that items ["home", "lock", "apps", "set", "user", "news"] are configured with the layout file, .json may be omitted from the file end, also note that if the file does not exist locally, we fallback to the copy included with `SwitchThemes.exe` if available. If not found, an error is returned
+Note that items ["home", "lock", "apps", "set", "user", "news"] are configured with the layout file, `.json` may be omitted from the file end, also note that if the file does not exist locally, we fallback to the copy included with `SwitchThemes.exe` if available. If not found, an error is returned
 
 ## **Step 4: Run the Tool**
 

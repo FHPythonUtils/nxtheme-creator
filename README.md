@@ -20,16 +20,14 @@ configuration file.
 **Usage**:
 
 ```bash
-usage: nxtheme-creator [-h] [--input INPUT] [--output OUTPUT] [--config CONFIG] nxtheme
+usage: nxtheme-creator [-h] [--nxtheme NXTHEME] [--input INPUT] [--output OUTPUT] [--config CONFIG]
 ```
 
-**Arguments**:
-
-- `nxtheme`: The path to the `nxtheme` executable (e.g., `/path/to/SwitchThemes.exe`). This can be obtained from [SwitchThemeInjector](https://github.com/exelix11/SwitchThemeInjector).
 
 **Options**:
 
 - `-h, --help`: Show help message and exit.
+- `--nxtheme NXTHEME`: The path to the `nxtheme` executable (e.g., `/path/to/SwitchThemes.exe`). This can be obtained from [SwitchThemeInjector](https://github.com/exelix11/SwitchThemeInjector).
 - `--input INPUT`: Specify the directory containing your input images.
 - `--output OUTPUT`: Define the directory where the generated theme files will be saved.
 - `--config CONFIG`: Provide an optional configuration file (`conf.json`) to customize layout settings.

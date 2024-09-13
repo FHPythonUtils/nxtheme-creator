@@ -19,8 +19,8 @@ def cli() -> None:  # pragma: no cover
 	parser = argparse.ArgumentParser(description=__doc__)
 
 	parser.add_argument(
-		"nxtheme",
-		help="Nxtheme command to use. eg /path/to/SwitchThemes.exe, obtain from https://github.com/exelix11/SwitchThemeInjector",
+		"--nxtheme",
+		help="Nxtheme command to use [optional]. eg /path/to/SwitchThemes.exe, obtain from https://github.com/exelix11/SwitchThemeInjector",
 	)
 	parser.add_argument("--input", help="input directory", default=".")
 	parser.add_argument("--output", help="output directory", default="./output")

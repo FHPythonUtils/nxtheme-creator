@@ -1,21 +1,26 @@
 """Underlying machineary to generate custom themes for your Nintendo Switch from your images."""
 
+from __future__ import annotations
+
 import os
 import re
-import subprocess
 from pathlib import Path
 
+from nxtheme_creator.backends import nxtheme, sarc_tool
+
 SCREEN_TYPES = ["home", "lock", "apps", "set", "user", "news"]
+
+THISDIR = Path(__file__).resolve().parent
 
 
 def walkfiletree(inputdir: str) -> dict:
 	"""Create a theme_image_map from an input directory by walking the dir and getting
-	    theme names and corresponding images for each component.
+		theme names and corresponding images for each component.
 
-	    :param str inputdir: the directory to walk
-	    :return dict: the final theme_image_map
+		:param str inputdir: the directory to walk
+		:return dict: the final theme_image_map
 
-	    **Example**:
+		**Example**:
 	Given the following directory structure:
 	```
 	input_directory/
@@ -24,22 +29,22 @@ def walkfiletree(inputdir: str) -> dict:
 	│   ├── lock.jpg
 	│   └── apps,news.jpg
 	└── ThemeB/
-	    ├── home.dds
-	    └── lock.dds
+		├── home.dds
+		└── lock.dds
 	```
 	Calling `walkfiletree("input_directory")` would produce:
 	```json
 	{
-	    "ThemeA": {
-	        "home": "/path/to/input_directory/ThemeA/home.jpg",
-	        "lock": "/path/to/input_directory/ThemeA/lock.jpg",
-	        "apps": "/path/to/input_directory/ThemeA/apps,news.jpg",
-	        "news": "/path/to/input_directory/ThemeA/apps,news.jpg"
-	    },
-	    "ThemeB": {
-	        "home": "/path/to/input_directory/ThemeB/home.dds",
-	        "lock": "/path/to/input_directory/ThemeB/lock.dds"
-	    }
+		"ThemeA": {
+			"home": "/path/to/input_directory/ThemeA/home.jpg",
+			"lock": "/path/to/input_directory/ThemeA/lock.jpg",
+			"apps": "/path/to/input_directory/ThemeA/apps,news.jpg",
+			"news": "/path/to/input_directory/ThemeA/apps,news.jpg"
+		},
+		"ThemeB": {
+			"home": "/path/to/input_directory/ThemeB/home.dds",
+			"lock": "/path/to/input_directory/ThemeB/lock.dds"
+		}
 	}
 	```
 	"""
@@ -56,24 +61,28 @@ def walkfiletree(inputdir: str) -> dict:
 					theme_image_map[theme_name] = {}
 
 				# Extract the screen types from the image name e.g., 'home,lock.jpg'
-				screen_types = re.match(r"(\w+(,\w+)*)", file).group(1)
+				matches = re.match(r"(\w+(,\w+)*)", file)
+				if matches:
+					screen_types = matches.group(1)
 
-				# Split by comma and map each screen type to the image path
-				top_level_theme = False
-				for screen_type in screen_types.split(","):
-					if screen_type in SCREEN_TYPES:
-						theme_image_map[theme_name][screen_type] = os.path.join(root, file)
-					else:
-						top_level_theme = True
-				if top_level_theme:
-					theme_image_map[screen_types] = {}
-					for default_screen_type in SCREEN_TYPES:
-						theme_image_map[screen_types][default_screen_type] = os.path.join(root, file)
+					# Split by comma and map each screen type to the image path
+					top_level_theme = False
+					for screen_type in screen_types.split(","):
+						if screen_type in SCREEN_TYPES:
+							theme_image_map[theme_name][screen_type] = os.path.join(root, file)
+						else:
+							top_level_theme = True
+					if top_level_theme:
+						theme_image_map[screen_types] = {}
+						for default_screen_type in SCREEN_TYPES:
+							theme_image_map[screen_types][default_screen_type] = os.path.join(
+								root, file
+							)
 
 	return theme_image_map
 
 
-def resolveConf(nxthemebin: str, conf: dict) -> dict:
+def resolveConf(nxthemebin: str | None, conf: dict) -> dict:
 	"""
 	Resolve the file paths for layout configurations specified in the `conf` dictionary.
 	This function checks if the specified layout files exist. If they do not, it attempts
@@ -81,23 +90,29 @@ def resolveConf(nxthemebin: str, conf: dict) -> dict:
 	If the files are still not found, it tries to append `.json` to the filenames and checks again.
 
 	:param str nxthemebin: The path to the `nxtheme` executable, used to locate the default
-	    `Layouts` directory.
+		`Layouts` directory.
 	:param dict conf: A dictionary containing layout configuration. The keys should be screen types
-	    (e.g., 'home', 'lock') and the values should be file paths or filenames.
+		(e.g., 'home', 'lock') and the values should be file paths or filenames.
 
 	:return dict: The updated `conf` dictionary with resolved file paths.
 	"""
+
+	if nxthemebin is not None:
+		layouts_dir = Path(nxthemebin).parent / "Layouts"
+	else:
+		layouts_dir = THISDIR / "layouts"
+
 	for screen_type in SCREEN_TYPES:
 		fname = conf.get(screen_type)
 		if fname is None:
 			break
 		layout = Path(fname)
 		if not layout.exists():
-			layout = Path(nxthemebin).parent / "Layouts" / layout.name
+			layout = layouts_dir / layout.name
 			if not layout.exists():
 				layout = Path(fname + ".json")
 				if not layout.exists():
-					layout = Path(nxthemebin).parent / "Layouts" / layout.name
+					layout = layouts_dir / layout.name
 					if not layout.exists():
 						msg = f"{conf[screen_type]} or {layout} does not exist :("
 						raise RuntimeError(msg)
@@ -105,14 +120,14 @@ def resolveConf(nxthemebin: str, conf: dict) -> dict:
 	return conf
 
 
-def processImages(nxthemebin: str, inputdir: str, outputdir: str, config: dict) -> None:
+def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config: dict) -> None:
 	"""
 	Process images from the specified input directory to generate Nintendo Switch themes. This
-	    function handles the following tasks:
+		function handles the following tasks:
 	1. Walks through the input directory to collect images and associate them with themes.
 	2. Resolves and validates configuration paths for layout files.
 	3. Iterates over each theme and its components, and builds the theme files using the `nxtheme`
-	    executable.
+		executable.
 
 	:param str nxthemebin: The path to the `nxtheme` executable used for building themes.
 	:param str inputdir: The directory containing the input images for the themes.
@@ -133,20 +148,11 @@ def processImages(nxthemebin: str, inputdir: str, outputdir: str, config: dict) 
 			name = f"{theme_name}_{component_name}"
 			out = f"{outputdir}/{theme_name}/{name}.nxtheme"
 			print(f"Processing '{out}' ...")
+
 			(Path(outputdir) / theme_name).mkdir(exist_ok=True, parents=True)
-			cmd = [
-				nxthemebin,
-				"buildNX",
-				component_name,
-				image_path,
-				config.get(component_name) or "",
-				f"name={name}",
-				f"author={author_name}",
-				f"out={out}",
-			]
-			if os.name != "nt":  # Not Windows, so run with mono
-				cmd = ["mono"] + cmd
-			subprocess.run(
-				cmd,
-				check=False,
-			)
+
+			if nxthemebin is not None:
+				nxtheme.execute(nxthemebin=nxthemebin, component_name=component_name, image_path=image_path, config=config, name=name, author_name=author_name, out=out)
+
+			else:
+				sarc_tool.execute(component_name=component_name, image_path=image_path, config=config, name=name, author_name=author_name, out=out)

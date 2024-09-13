@@ -25,4 +25,5 @@ def cli() -> None: ...
 ## Modules
 
 - [Module](./module.md)
+- [Img Info](./img_info.md)
 - [Process Themes](./process_themes.md)

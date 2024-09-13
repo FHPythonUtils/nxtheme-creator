@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "nxtheme_creator"
-version = "2024.0.1"
-license = "mit"
+version = "2024.1"
+license = "gpl-2.0-or-later"
 description = ""
 authors = ["FredHappyface"]
 classifiers = [
@@ -20,7 +20,8 @@ documentation = "https://github.com/FHPythonUtils/nxtheme-creator/blob/master/RE
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.8"
+python = ">=3.8,<4"
+sarc = "<3,>=2.0.5"
 
 [tool.poetry.scripts]
 nxtheme_creator = 'nxtheme_creator:cli'

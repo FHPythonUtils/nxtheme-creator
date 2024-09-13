@@ -1,7 +1,7 @@
 requirements_optional.txt
 example-theme/*
 /conf.json
-output/*
+outpu*
 
 # DepHell stuff
 poetry.lock
