@@ -10,22 +10,22 @@
 
 ## get_dds_info
 
-[Show source in img_info.py:30](../../../nxtheme_creator/img_info.py#L30)
+[Show source in img_info.py:32](../../../nxtheme_creator/img_info.py#L32)
 
 #### Signature
 
 ```python
-def get_dds_info(dds: bytes): ...
+def get_dds_info(dds: bytes) -> tuple[int, int, bool]: ...
 ```
 
 
 
 ## get_jpeg_info
 
-[Show source in img_info.py:6](../../../nxtheme_creator/img_info.py#L6)
+[Show source in img_info.py:8](../../../nxtheme_creator/img_info.py#L8)
 
 #### Signature
 
 ```python
-def get_jpeg_info(jpeg: bytes): ...
+def get_jpeg_info(jpeg: bytes) -> tuple[int, int, bool]: ...
 ```
