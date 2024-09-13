@@ -1,9 +1,18 @@
 """Use python subprocess to drive the user defined SwitchTheme.exe"""
+
 import os
 import subprocess
 
 
-def execute(nxthemebin: str, component_name: str, image_path: str, config: dict, name: str, author_name: str, out: str):
+def execute(
+	nxthemebin: str,
+	component_name: str,
+	image_path: str,
+	config: dict,
+	name: str,
+	author_name: str,
+	out: str,
+):
 	cmd = [
 		nxthemebin,
 		"buildNX",

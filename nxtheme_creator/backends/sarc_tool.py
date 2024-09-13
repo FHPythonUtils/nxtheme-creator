@@ -1,16 +1,17 @@
-"""Python implementation of SwitchTheme.exe using the sarc lib to do a lot of the heavy lifting """
+"""Python implementation of SwitchTheme.exe using the sarc lib to do a lot of the heavy lifting"""
 
 from __future__ import annotations
 
 import io
 import json
-from pathlib import Path
 import typing
+from pathlib import Path
 
 import oead
 from sarc import sarc
 
 from nxtheme_creator import img_info
+
 
 def _write_sarc(writer: sarc.SARCWriter, dest_stream: typing.BinaryIO) -> None:
 	buf = io.BytesIO()
@@ -34,7 +35,9 @@ def sarc_create(files: dict[str, bytes], dest_file: str) -> None:
 	_write_sarc(writer, dest_stream)
 
 
-def execute(component_name: str, image_path: str, config: dict, name: str, author_name: str, out: str):
+def execute(
+	component_name: str, image_path: str, config: dict, name: str, author_name: str, out: str
+):
 	img = Path(image_path)
 
 	width, height, is_progressive, is_dxt1 = 0, 0, False, True
@@ -43,7 +46,6 @@ def execute(component_name: str, image_path: str, config: dict, name: str, autho
 		width, height, is_progressive = img_info.get_jpeg_info(img.read_bytes())
 	if img.suffix == ".dds":
 		width, height, is_dxt1 = img_info.get_dds_info(img.read_bytes())
-
 
 	if not is_dxt1:
 		print("Image must be encoded as DXT1")
@@ -72,9 +74,7 @@ def execute(component_name: str, image_path: str, config: dict, name: str, autho
 	layout = config.get(component_name)
 	if layout:
 		layout_json = json.loads(Path(layout).read_bytes())
-		info["LayoutInfo"] = (
-			layout_json["PatchName"] + " by " + layout_json["AuthorName"]
-		)
+		info["LayoutInfo"] = layout_json["PatchName"] + " by " + layout_json["AuthorName"]
 		files["layout.json"] = dump_dict(layout_json)
 
 	info["Target"] = component_name
@@ -83,7 +83,6 @@ def execute(component_name: str, image_path: str, config: dict, name: str, autho
 	sarc_create(files=files, dest_file=out)
 
 	print("Done!")
-
 
 
 def dump_dict(json_data: dict) -> bytes:

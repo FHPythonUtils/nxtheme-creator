@@ -152,7 +152,22 @@ def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config:
 			(Path(outputdir) / theme_name).mkdir(exist_ok=True, parents=True)
 
 			if nxthemebin is not None:
-				nxtheme.execute(nxthemebin=nxthemebin, component_name=component_name, image_path=image_path, config=config, name=name, author_name=author_name, out=out)
+				nxtheme.execute(
+					nxthemebin=nxthemebin,
+					component_name=component_name,
+					image_path=image_path,
+					config=config,
+					name=name,
+					author_name=author_name,
+					out=out,
+				)
 
 			else:
-				sarc_tool.execute(component_name=component_name, image_path=image_path, config=config, name=name, author_name=author_name, out=out)
+				sarc_tool.execute(
+					component_name=component_name,
+					image_path=image_path,
+					config=config,
+					name=name,
+					author_name=author_name,
+					out=out,
+				)

@@ -28,17 +28,17 @@ def get_jpeg_info(jpeg: bytes):
 
 
 def get_dds_info(dds: bytes):
-    if dds[:4] != b'DDS ':
-        raise ValueError("Not a valid DDS file.")
+	if dds[:4] != b"DDS ":
+		raise ValueError("Not a valid DDS file.")
 
-    # Unpack the relevant parts of the header
-    # Width and height are at offsets 12 and 16, FourCC at offset 84
-    header = dds[:128]
+	# Unpack the relevant parts of the header
+	# Width and height are at offsets 12 and 16, FourCC at offset 84
+	header = dds[:128]
 
-    height = struct.unpack_from('<I', header, offset=12)[0]
-    width = struct.unpack_from('<I', header, offset=16)[0]
-    four_cc = struct.unpack_from('<4s', header, offset=84)[0]
+	height = struct.unpack_from("<I", header, offset=12)[0]
+	width = struct.unpack_from("<I", header, offset=16)[0]
+	four_cc = struct.unpack_from("<4s", header, offset=84)[0]
 
-    is_dxt1 = four_cc == b'DXT1'
+	is_dxt1 = four_cc == b"DXT1"
 
-    return width, height, is_dxt1
+	return width, height, is_dxt1
