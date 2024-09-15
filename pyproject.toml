@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nxtheme_creator"
-version = "2024.1.1"
+version = "2024.2"
 license = "gpl-2.0-or-later"
 description = "Tool for making custom Nintendo Switch themes using `SwitchThemes.exe` with images, and a simple config"
 authors = ["FredHappyface"]
@@ -22,6 +22,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.8,<4"
 sarc = "<3,>=2.0.5"
+oead = "<2,>=1.2.9.post4"
+pillow = "<11,>=10.4.0"
 
 [tool.poetry.scripts]
 nxtheme_creator = 'nxtheme_creator:cli'

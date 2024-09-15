@@ -10,4 +10,5 @@ A full list of `Nxtheme-creator` project modules.
         - [Nxtheme](nxtheme_creator/backends/nxtheme.md#nxtheme)
         - [Sarc Tool](nxtheme_creator/backends/sarc_tool.md#sarc-tool)
     - [Img Info](nxtheme_creator/img_info.md#img-info)
+    - [Process Image](nxtheme_creator/process_image.md#process-image)
     - [Process Themes](nxtheme_creator/process_themes.md#process-themes)

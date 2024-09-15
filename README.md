@@ -23,7 +23,6 @@ configuration file.
 usage: nxtheme-creator [-h] [--nxtheme NXTHEME] [--input INPUT] [--output OUTPUT] [--config CONFIG]
 ```
 
-
 **Options**:
 
 - `-h, --help`: Show help message and exit.

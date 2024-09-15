@@ -11,7 +11,7 @@
 
 ## processImages
 
-[Show source in process_themes.py:123](../../../nxtheme_creator/process_themes.py#L123)
+[Show source in process_themes.py:131](../../../nxtheme_creator/process_themes.py#L131)
 
 Process images from the specified input directory to generate Nintendo Switch themes. This
  function handles the following tasks:
@@ -44,7 +44,7 @@ def processImages(
 
 ## resolveConf
 
-[Show source in process_themes.py:85](../../../nxtheme_creator/process_themes.py#L85)
+[Show source in process_themes.py:93](../../../nxtheme_creator/process_themes.py#L93)
 
 Resolve the file paths for layout configurations specified in the `conf` dictionary.
 This function checks if the specified layout files exist. If they do not, it attempts
@@ -73,7 +73,7 @@ def resolveConf(nxthemebin: str | None, conf: dict) -> dict: ...
 
 ## walkfiletree
 
-[Show source in process_themes.py:16](../../../nxtheme_creator/process_themes.py#L16)
+[Show source in process_themes.py:18](../../../nxtheme_creator/process_themes.py#L18)
 
 Create a theme_image_map from an input directory by walking the dir and getting
 theme names and corresponding images for each component.
