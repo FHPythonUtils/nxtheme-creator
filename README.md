@@ -134,8 +134,7 @@ https://help.github.com/en/desktop/contributing-to-projects/cloning-a-repository
 
 ### Licence
 
-MIT License
-Copyright (c) FredHappyface
+GPL-2.0 License
 (See the [LICENSE](/LICENSE.md) for more information.)
 
 ### Changelog
