@@ -2,9 +2,11 @@ from PIL import Image, ImageOps
 
 SIZE = (1280, 720)
 
+
 def resize_stretch(image: Image.Image):
 	"""Resize the image by stretching it to the target SIZE."""
 	return image.resize(SIZE, Image.Resampling.LANCZOS)
+
 
 def resize_center_crop(image: Image.Image):
 	"""Resize the image using center crop method."""
@@ -25,6 +27,7 @@ def resize_center_crop(image: Image.Image):
 
 	return cropped_image.resize(SIZE, Image.Resampling.LANCZOS)
 
+
 def resize_outer_crop_letterbox(image: Image.Image):
 	"""Resize the image using outer crop (letterbox) method."""
 	# Add padding if necessary (letterbox)
@@ -32,15 +35,16 @@ def resize_outer_crop_letterbox(image: Image.Image):
 	letterbox_image = ImageOps.pad(image, SIZE, color=(0, 0, 0))
 	return letterbox_image
 
-def resize_image(input_path, output_path, method='stretch'):
+
+def resize_image(input_path, output_path, method="stretch"):
 	"""Resize the image using the specified method and save the output."""
 	image = Image.open(input_path)
 
-	if method == 'stretch':
+	if method == "stretch":
 		resized_image = resize_stretch(image)
-	elif method == 'centerCrop':
+	elif method == "centerCrop":
 		resized_image = resize_center_crop(image)
-	elif method == 'outerCrop':
+	elif method == "outerCrop":
 		resized_image = resize_outer_crop_letterbox(image)
 	else:
 		return input_path

@@ -12,7 +12,7 @@
 
 ## resize_center_crop
 
-[Show source in process_image.py:9](../../../nxtheme_creator/process_image.py#L9)
+[Show source in process_image.py:11](../../../nxtheme_creator/process_image.py#L11)
 
 Resize the image using center crop method.
 
@@ -26,7 +26,7 @@ def resize_center_crop(image: Image.Image): ...
 
 ## resize_image
 
-[Show source in process_image.py:35](../../../nxtheme_creator/process_image.py#L35)
+[Show source in process_image.py:39](../../../nxtheme_creator/process_image.py#L39)
 
 Resize the image using the specified method and save the output.
 
@@ -40,7 +40,7 @@ def resize_image(input_path, output_path, method="stretch"): ...
 
 ## resize_outer_crop_letterbox
 
-[Show source in process_image.py:28](../../../nxtheme_creator/process_image.py#L28)
+[Show source in process_image.py:31](../../../nxtheme_creator/process_image.py#L31)
 
 Resize the image using outer crop (letterbox) method.
 
@@ -54,7 +54,7 @@ def resize_outer_crop_letterbox(image: Image.Image): ...
 
 ## resize_stretch
 
-[Show source in process_image.py:5](../../../nxtheme_creator/process_image.py#L5)
+[Show source in process_image.py:6](../../../nxtheme_creator/process_image.py#L6)
 
 Resize the image by stretching it to the target SIZE.
 

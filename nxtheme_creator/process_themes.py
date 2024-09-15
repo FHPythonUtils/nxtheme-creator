@@ -6,9 +6,9 @@ import os
 import re
 from pathlib import Path
 
+from nxtheme_creator import img_info
 from nxtheme_creator.backends import nxtheme, sarc_tool
 from nxtheme_creator.process_image import resize_image
-from nxtheme_creator import img_info
 
 SCREEN_TYPES = ["home", "lock", "apps", "set", "user", "news"]
 
@@ -55,7 +55,6 @@ def walkfiletree(inputdir: str) -> dict:
 	def insert_img_path(theme_name: str, screen_type: str, img_path: str):
 		theme_image_map[theme_name][screen_type] = img_path
 
-
 	# Walk over directories under inputdir
 	for root, _dirs, files in os.walk(inputdir):
 		for file in files:
@@ -76,7 +75,9 @@ def walkfiletree(inputdir: str) -> dict:
 					# Split by comma and map each screen type to the image path
 					for screen_type in img_file_name.split(","):
 						if screen_type in SCREEN_TYPES:
-							insert_img_path(theme_name=theme_name, screen_type=screen_type, img_path=img_path)
+							insert_img_path(
+								theme_name=theme_name, screen_type=screen_type, img_path=img_path
+							)
 						else:
 							top_level_theme = True
 
@@ -84,8 +85,9 @@ def walkfiletree(inputdir: str) -> dict:
 					if top_level_theme:
 						theme_image_map[img_file_name] = {}
 						for screen_type in SCREEN_TYPES:
-							insert_img_path(theme_name=img_file_name, screen_type=screen_type, img_path=img_path)
-
+							insert_img_path(
+								theme_name=img_file_name, screen_type=screen_type, img_path=img_path
+							)
 
 	return theme_image_map
 
@@ -147,7 +149,7 @@ def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config:
 	"""
 	themeimgmap = walkfiletree(inputdir=inputdir)
 	config = resolveConf(nxthemebin, conf=config)
-	method=config.get("resize_method")
+	method = config.get("resize_method")
 
 	author_name = config.get("author_name") or "JohnDoe"
 
@@ -162,7 +164,7 @@ def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config:
 			# check image
 			if method:
 				img = Path(image_path)
-				width, height, is_progressive, is_dxt1 = 0,0,False, True
+				width, height, is_progressive, is_dxt1 = 0, 0, False, True
 				if img.suffix == ".jpg":
 					width, height, is_progressive = img_info.get_jpeg_info(img.read_bytes())
 				if img.suffix == ".dds":
@@ -170,8 +172,9 @@ def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config:
 
 				if not is_dxt1 or is_progressive or (width, height) != (1280, 720):
 					image_out_path = f"{outputdir}/{theme_name}/{full_theme_name}.jpg"
-					image_path = resize_image(input_path=image_path, output_path=image_out_path, method=method)
-
+					image_path = resize_image(
+						input_path=image_path, output_path=image_out_path, method=method
+					)
 
 			if nxthemebin is not None:
 				nxtheme.execute(
