@@ -1,44 +1,48 @@
-[tool.poetry]
+[project]
 name = "nxtheme_creator"
-version = "2024.2"
-license = "gpl-2.0-or-later"
+version = "2025"
 description = "Tool for making custom Nintendo Switch themes using `SwitchThemes.exe` with images, and a simple config"
-authors = ["FredHappyface"]
-classifiers = [
-	"Development Status :: 4 - Beta",
-	"Intended Audience :: Developers",
-	"Intended Audience :: Education",
-	"Natural Language :: English",
-	"Operating System :: Microsoft :: Windows",
-	"Programming Language :: Python :: Implementation :: CPython",
-	"Topic :: Software Development :: Libraries :: Python Modules",
-	"Topic :: Utilities"
-]
-homepage = "https://github.com/FHPythonUtils/nxtheme-creator"
-repository = "https://github.com/FHPythonUtils/nxtheme-creator"
-documentation = "https://github.com/FHPythonUtils/nxtheme-creator/blob/master/README.md"
+authors = [{ name = "FredHappyface" }]
+requires-python = ">=3.9"
 readme = "README.md"
+license = "gpl-2.0-or-later"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Natural Language :: English",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "oead>=1.2.9.post4",
+    "pillow>=10.4.0",
+    "sarc>=2.0.5",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.8,<4"
-sarc = "<3,>=2.0.5"
-oead = "<2,>=1.2.9.post4"
-pillow = "<11,>=10.4.0"
+[project.urls]
+Homepage = "https://github.com/FHPythonUtils/nxtheme-creator"
+Repository = "https://github.com/FHPythonUtils/nxtheme-creator"
+Documentation = "https://github.com/FHPythonUtils/nxtheme-creator/blob/master/README.md"
 
-[tool.poetry.scripts]
-nxtheme_creator = 'nxtheme_creator:cli'
+[project.scripts]
+nxtheme_creator = "nxtheme_creator:cli"
 
-[tool.poetry.group.dev.dependencies]
-imgcompare = "^2.0.1"
-pytest = "^8.1.1"
-handsdown = "^2.1.0"
-coverage = "^7.4.4"
-ruff = "^0.3.3"
-pyright = "^1.1.354"
+[dependency-groups]
+dev = [
+    "coverage>=7.9.2",
+    "handsdown>=2.1.0",
+    "imgcompare>=2.0.1",
+    "pyright>=1.1.403",
+    "pytest>=8.4.1",
+    "ruff>=0.12.2",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.ruff]
 line-length = 100

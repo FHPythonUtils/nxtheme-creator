@@ -79,7 +79,7 @@ def execute(
 		return
 
 	info = {
-		"Version": 15,
+		"Version": 16,
 		"Author": author_name,
 		"ThemeName": theme_name,
 	}
@@ -90,6 +90,7 @@ def execute(
 
 	if layout_path:
 		layout_json = json.loads(Path(layout_path).read_bytes())
+		layout_json["TargetFirmware"] = 1100
 		info["LayoutInfo"] = layout_json["PatchName"] + " by " + layout_json["AuthorName"]
 		files["layout.json"] = dump_dict(layout_json)
 

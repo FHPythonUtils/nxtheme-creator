@@ -3,6 +3,11 @@
 All major and minor version changes will be documented in this file. Details of
 patch-level version changes can be found in [commit messages](../../commits/master).
 
+## 2025 - 2025/07/10
+
+- Migrate to uv
+-
+
 ## 2024.2 - 2024/09/15
 
 - support means of image preprocessing through a `resize_method` option. It can take one of the following values:

@@ -58,7 +58,8 @@ def walkfiletree(inputdir: str) -> dict:
 	# Walk over directories under inputdir
 	for root, _dirs, files in os.walk(inputdir):
 		for file in files:
-			if file.endswith((".jpg", ".dds")):
+			f = Path(file)
+			if f.suffix is not None:
 				# Extract theme name from the directory structure
 				theme_name = Path(root).name
 				if theme_name not in theme_image_map:
@@ -116,16 +117,27 @@ def resolveConf(nxthemebin: str | None, conf: dict) -> dict:
 		fname = conf.get(screen_type)
 		if fname is None:
 			break
+
 		layout = Path(fname)
-		if not layout.exists():
-			layout = layouts_dir / layout.name
-			if not layout.exists():
-				layout = Path(fname + ".json")
-				if not layout.exists():
-					layout = layouts_dir / layout.name
-					if not layout.exists():
-						msg = f"{conf[screen_type]} or {layout} does not exist :("
-						raise RuntimeError(msg)
+		candidates = [
+			layout,
+			layouts_dir / layout.name,
+			layouts_dir / screen_type/layout.name,
+		]
+
+		for candidate in candidates:
+			if candidate.exists():
+				layout = candidate
+				break
+			_candidate = candidate.with_suffix('.json')
+			if _candidate.exists():
+				layout = _candidate
+				break
+		else:
+			msg = f"{conf[screen_type]} or {layout} does not exist :("
+			raise RuntimeError(msg)
+
+
 		conf[screen_type] = str(layout)
 	return conf
 
@@ -150,6 +162,7 @@ def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config:
 	themeimgmap = walkfiletree(inputdir=inputdir)
 	config = resolveConf(nxthemebin, conf=config)
 	method = config.get("resize_method")
+
 
 	author_name = config.get("author_name") or "JohnDoe"
 
