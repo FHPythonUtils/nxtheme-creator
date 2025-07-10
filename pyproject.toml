@@ -19,6 +19,7 @@ classifiers = [
 dependencies = [
     "oead>=1.2.9.post4",
     "pillow>=10.4.0",
+    "pydantic>=2.11.7",
     "sarc>=2.0.5",
 ]
 

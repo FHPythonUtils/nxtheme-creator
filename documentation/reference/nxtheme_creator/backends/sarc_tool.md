@@ -12,7 +12,7 @@
 
 ## clean_dict
 
-[Show source in sarc_tool.py:115](../../../../nxtheme_creator/backends/sarc_tool.py#L115)
+[Show source in sarc_tool.py:116](../../../../nxtheme_creator/backends/sarc_tool.py#L116)
 
 Recursively removes entries with None or 0 values from a dictionary, including
 nested dictionaries and lists.
@@ -27,7 +27,7 @@ def clean_dict(d: dict | list | typing.Any) -> dict | list | typing.Any: ...
 
 ## dump_dict
 
-[Show source in sarc_tool.py:104](../../../../nxtheme_creator/backends/sarc_tool.py#L104)
+[Show source in sarc_tool.py:105](../../../../nxtheme_creator/backends/sarc_tool.py#L105)
 
 Format the json files as similar to exelix11/SwitchThemeInjector as possible.
 

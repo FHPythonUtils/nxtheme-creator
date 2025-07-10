@@ -10,7 +10,7 @@
 
 ## cli
 
-[Show source in __init__.py:17](../../../nxtheme_creator/__init__.py#L17)
+[Show source in __init__.py:18](../../../nxtheme_creator/__init__.py#L18)
 
 Cli entry point.
 
@@ -26,6 +26,7 @@ def cli() -> None: ...
 
 - [Module](./module.md)
 - [Backends](backends/index.md)
+- [Datamodels](./datamodels.md)
 - [Img Info](./img_info.md)
 - [Process Image](./process_image.md)
 - [Process Themes](./process_themes.md)

@@ -11,7 +11,7 @@
 
 ## processImages
 
-[Show source in process_themes.py:133](../../../nxtheme_creator/process_themes.py#L133)
+[Show source in process_themes.py:146](../../../nxtheme_creator/process_themes.py#L146)
 
 Process images from the specified input directory to generate Nintendo Switch themes. This
  function handles the following tasks:
@@ -25,8 +25,8 @@ Process images from the specified input directory to generate Nintendo Switch th
 - `nxthemebin` *str* - The path to the `nxtheme` executable used for building themes.
 - `inputdir` *str* - The directory containing the input images for the themes.
 - `outputdir` *str* - The directory where the generated theme files will be saved.
-- `config` *dict* - A dictionary containing configuration options such as the author name,
-and paths to layout files.
+- `config` *Config* - A pydantic datamodel containing configuration options such as
+the author name, and paths to layout files.
 
 #### Returns
 
@@ -36,9 +36,13 @@ None
 
 ```python
 def processImages(
-    nxthemebin: str | None, inputdir: str, outputdir: str, config: dict
+    nxthemebin: str | None, inputdir: str, outputdir: str, config: Config
 ) -> None: ...
 ```
+
+#### See also
+
+- [Config](./datamodels.md#config)
 
 
 
@@ -66,14 +70,18 @@ The updated `conf` dictionary with resolved file paths.
 #### Signature
 
 ```python
-def resolveConf(nxthemebin: str | None, conf: dict) -> dict: ...
+def resolveConf(nxthemebin: str | None, conf: Config) -> Config: ...
 ```
+
+#### See also
+
+- [Config](./datamodels.md#config)
 
 
 
 ## walkfiletree
 
-[Show source in process_themes.py:18](../../../nxtheme_creator/process_themes.py#L18)
+[Show source in process_themes.py:17](../../../nxtheme_creator/process_themes.py#L17)
 
 Create a theme_image_map from an input directory by walking the dir and getting
 theme names and corresponding images for each component.

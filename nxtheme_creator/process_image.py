@@ -1,14 +1,18 @@
-from PIL import Image, ImageOps
+from __future__ import annotations
+
+from PIL import Image, ImageFilter, ImageOps
+
+from nxtheme_creator.datamodels import ImageMode, ResizeMethod
 
 SIZE = (1280, 720)
 
 
-def resize_stretch(image: Image.Image):
+def resize_stretch(image: Image.Image) -> Image.Image:
 	"""Resize the image by stretching it to the target SIZE."""
 	return image.resize(SIZE, Image.Resampling.LANCZOS)
 
 
-def resize_center_crop(image: Image.Image):
+def resize_center_crop(image: Image.Image) -> Image.Image:
 	"""Resize the image using center crop method."""
 	# Find the aspect ratio of the target SIZE and original image
 	aspect_ratio_target = SIZE[0] / SIZE[1]
@@ -28,26 +32,37 @@ def resize_center_crop(image: Image.Image):
 	return cropped_image.resize(SIZE, Image.Resampling.LANCZOS)
 
 
-def resize_outer_crop_letterbox(image: Image.Image):
+def resize_outer_crop_letterbox(image: Image.Image) -> Image.Image:
 	"""Resize the image using outer crop (letterbox) method."""
-	# Add padding if necessary (letterbox)
+	# Add padding if necessary ,,letterbox,,
 	image.thumbnail(SIZE, Image.Resampling.LANCZOS)
 	letterbox_image = ImageOps.pad(image, SIZE, color=(0, 0, 0))
 	return letterbox_image
 
 
-def resize_image(input_path, output_path, method="stretch"):
+def mode_blur(image: Image.Image) -> Image.Image:
+	return image.filter(ImageFilter.GaussianBlur(radius=20))
+
+
+def resize_image(
+	input_path: str,
+	output_path: str,
+	resize_method: ResizeMethod = ResizeMethod.STRETCH,
+	image_mode: ImageMode | None = None,
+):
 	"""Resize the image using the specified method and save the output."""
 	image = Image.open(input_path)
 
-	if method == "stretch":
-		resized_image = resize_stretch(image)
-	elif method == "centerCrop":
-		resized_image = resize_center_crop(image)
-	elif method == "outerCrop":
-		resized_image = resize_outer_crop_letterbox(image)
-	else:
-		return input_path
+	if resize_method == ResizeMethod.STRETCH:
+		transformed_image = resize_stretch(image)
+	elif resize_method == ResizeMethod.CENTERCROP:
+		transformed_image = resize_center_crop(image)
+	elif resize_method == ResizeMethod.OUTERCROP:
+		transformed_image = resize_outer_crop_letterbox(image)
 
-	resized_image.save(output_path, progressive=False)
+	# Apply effects here
+	if image_mode == ImageMode.BLUR:
+		transformed_image = mode_blur(transformed_image)
+
+	transformed_image.save(output_path, progressive=False)
 	return output_path

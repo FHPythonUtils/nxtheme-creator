@@ -9,6 +9,7 @@ import argparse
 import json
 from pathlib import Path
 
+from nxtheme_creator.datamodels import Config
 from nxtheme_creator.process_themes import processImages
 
 THISDIR = Path(__file__).resolve().parent
@@ -33,5 +34,8 @@ def cli() -> None:  # pragma: no cover
 	config = json.loads(Path(conf).read_text("utf-8"))
 
 	processImages(
-		nxthemebin=args.nxtheme, inputdir=args.input, outputdir=args.output, config=config
+		nxthemebin=args.nxtheme,
+		inputdir=args.input,
+		outputdir=args.output,
+		config=Config.model_validate(config),
 	)

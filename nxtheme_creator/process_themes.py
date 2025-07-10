@@ -8,9 +8,8 @@ from pathlib import Path
 
 from nxtheme_creator import img_info
 from nxtheme_creator.backends import nxtheme, sarc_tool
+from nxtheme_creator.datamodels import SCREEN_TYPES, Config, LayoutConfig, ResizeMethod
 from nxtheme_creator.process_image import resize_image
-
-SCREEN_TYPES = ["home", "lock", "apps", "set", "user", "news"]
 
 THISDIR = Path(__file__).resolve().parent
 
@@ -93,7 +92,7 @@ def walkfiletree(inputdir: str) -> dict:
 	return theme_image_map
 
 
-def resolveConf(nxthemebin: str | None, conf: dict) -> dict:
+def resolveConf(nxthemebin: str | None, conf: Config) -> Config:
 	"""
 	Resolve the file paths for layout configurations specified in the `conf` dictionary.
 	This function checks if the specified layout files exist. If they do not, it attempts
@@ -114,7 +113,8 @@ def resolveConf(nxthemebin: str | None, conf: dict) -> dict:
 		layouts_dir = THISDIR / "layouts"
 
 	for screen_type in SCREEN_TYPES:
-		fname = conf.get(screen_type)
+		layout_config: LayoutConfig = getattr(conf, screen_type, None)
+		fname = layout_config.layout
 		if fname is None:
 			break
 
@@ -122,14 +122,14 @@ def resolveConf(nxthemebin: str | None, conf: dict) -> dict:
 		candidates = [
 			layout,
 			layouts_dir / layout.name,
-			layouts_dir / screen_type/layout.name,
+			layouts_dir / screen_type / layout.name,
 		]
 
 		for candidate in candidates:
 			if candidate.exists():
 				layout = candidate
 				break
-			_candidate = candidate.with_suffix('.json')
+			_candidate = candidate.with_suffix(".json")
 			if _candidate.exists():
 				layout = _candidate
 				break
@@ -137,12 +137,13 @@ def resolveConf(nxthemebin: str | None, conf: dict) -> dict:
 			msg = f"{conf[screen_type]} or {layout} does not exist :("
 			raise RuntimeError(msg)
 
+		_conf = {"author_name": conf.author_name, "resize_method": conf.resize_method}
 
-		conf[screen_type] = str(layout)
-	return conf
+		_conf[screen_type] = LayoutConfig(layout=str(layout), mode=layout_config.mode)
+	return Config.model_validate(_conf)
 
 
-def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config: dict) -> None:
+def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config: Config) -> None:
 	"""
 	Process images from the specified input directory to generate Nintendo Switch themes. This
 		function handles the following tasks:
@@ -154,20 +155,22 @@ def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config:
 	:param str nxthemebin: The path to the `nxtheme` executable used for building themes.
 	:param str inputdir: The directory containing the input images for the themes.
 	:param str outputdir: The directory where the generated theme files will be saved.
-	:param dict config: A dictionary containing configuration options such as the author name,
-	and paths to layout files.
+	:param Config config: A pydantic datamodel containing configuration options such as
+	the author name, and paths to layout files.
 
 	:return: None
 	"""
 	themeimgmap = walkfiletree(inputdir=inputdir)
-	config = resolveConf(nxthemebin, conf=config)
-	method = config.get("resize_method")
+	config: Config = resolveConf(nxthemebin, conf=config)
+	method: ResizeMethod = config.resize_method
 
-
-	author_name = config.get("author_name") or "JohnDoe"
+	author_name = config.author_name or "JohnDoe"
 
 	for theme_name, theme in themeimgmap.items():
 		for component_name, image_path in theme.items():
+			component_config = getattr(config, component_name, None)
+			layout_path = component_config.layout
+
 			full_theme_name = f"{theme_name}_{component_name}"
 			out = f"{outputdir}/{theme_name}/{full_theme_name}.nxtheme"
 			print(f"Processing '{out}' ...")  # noqa: T201
@@ -175,7 +178,7 @@ def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config:
 			(Path(outputdir) / theme_name).mkdir(exist_ok=True, parents=True)
 
 			# check image
-			if method:
+			if method != ResizeMethod.NORESIZE or component_config.mode is not None:
 				img = Path(image_path)
 				width, height, is_progressive, is_dxt1 = 0, 0, False, True
 				if img.suffix == ".jpg":
@@ -186,7 +189,10 @@ def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config:
 				if not is_dxt1 or is_progressive or (width, height) != (1280, 720):
 					image_out_path = f"{outputdir}/{theme_name}/{full_theme_name}.jpg"
 					image_path = resize_image(
-						input_path=image_path, output_path=image_out_path, method=method
+						input_path=image_path,
+						output_path=image_out_path,
+						resize_method=method,
+						image_mode=component_config.mode,
 					)
 
 			if nxthemebin is not None:
@@ -194,7 +200,7 @@ def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config:
 					nxthemebin=nxthemebin,
 					component_name=component_name,
 					image_path=image_path,
-					layout_path=config.get(component_name) or "",
+					layout_path=layout_path or "",
 					theme_name=full_theme_name,
 					author_name=author_name,
 					out=out,
@@ -204,7 +210,7 @@ def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config:
 				sarc_tool.execute(
 					component_name=component_name,
 					image_path=image_path,
-					layout_path=config.get(component_name),
+					layout_path=layout_path,
 					theme_name=full_theme_name,
 					author_name=author_name,
 					out=out,
