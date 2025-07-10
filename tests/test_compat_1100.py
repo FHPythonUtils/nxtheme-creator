@@ -50,29 +50,57 @@ LATEST_VERSION = "4.8.1"
 SWITCH_THEMES_EXE = r"C:\Users\Dell\Downloads\Release4.8.1\SwitchThemes.exe"
 
 
-def test_me():
-	input_dir = str(THISDIR / "data/input")
-	output_dir = str(THISDIR / "data/output")
+def test_centerCrop():
+	conf = {
+		"home": aux_rand_layout("home"),
+		# "lock": aux_rand_layout("lock"),
+		"apps": aux_rand_layout("apps"),
+		"psl": aux_rand_layout("psl"),
+		"author_name": "JohnDoe",
+		"resize_method": "centerCrop",
+	}
+	aux_testcase("center_crop", conf)
 
-	home_layout_name = random.choice([p.name for p in (nxdir / "layouts/home").iterdir()])
-	lock_layout_name = random.choice([p.name for p in (nxdir / "layouts/lock").iterdir()])
-	apps_layout_name = random.choice([p.name for p in (nxdir / "layouts/apps").iterdir()])
-	psl_layout_name = random.choice([p.name for p in (nxdir / "layouts/psl").iterdir()])
 
-	config = Config.model_validate(
-		{
-			"home": home_layout_name,
-			"lock": lock_layout_name,
-			"apps": apps_layout_name,
-			"psl": psl_layout_name,
-			"author_name": "JohnDoe",
-			"resize_method": "stretch",
-		}
-	)
+def test_stretch():
+	conf = {
+		"home": {"layout": aux_rand_layout("home"), "mode": "color"},
+		# "lock": aux_rand_layout("lock"),
+		"apps": aux_rand_layout("apps"),
+		"psl": aux_rand_layout("psl"),
+		"author_name": "JohnDoe",
+		"resize_method": "stretch",
+	}
+	aux_testcase("stretch", conf)
+
+
+def test_outerCrop():
+	conf = {
+		"home": {"layout": aux_rand_layout("home"), "mode": "blur"},
+		# "lock": aux_rand_layout("lock"),
+		"apps": aux_rand_layout("apps"),
+		"psl": aux_rand_layout("psl"),
+		"author_name": "JohnDoe",
+		"resize_method": "outerCrop",
+	}
+	aux_testcase("outer_crop", conf)
+
+
+def aux_rand_layout(layout: str) -> str:
+	return random.choice([p.name for p in (nxdir / "layouts" / layout).iterdir()])
+
+
+def aux_testcase(_input_dir: str, config: dict):
+	input_dir = str(THISDIR / "data" / _input_dir)
+	output_dir = str(THISDIR / "data/output" / _input_dir)
+
+	config = Config.model_validate(config)
 
 	# 'Native" with nxtheme-creator
-	processImages(
-		nxthemebin=None, inputdir=input_dir, outputdir=output_dir + "_native", config=config
+	print(
+		processImages(
+			nxthemebin=None, inputdir=input_dir, outputdir=output_dir + "_native", config=config
+		)
 	)
 
 	# # With SWITCH_THEMES_EXE

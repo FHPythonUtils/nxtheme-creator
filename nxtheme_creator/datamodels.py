@@ -17,6 +17,7 @@ class ResizeMethod(Enum):
 
 class ImageMode(Enum):
 	BLUR = "blur"
+	COLOR = "color"
 
 
 class LayoutConfig(BaseModel):

@@ -111,6 +111,7 @@ def resolveConf(nxthemebin: str | None, conf: Config) -> Config:
 		layouts_dir = Path(nxthemebin).parent / "Layouts"
 	else:
 		layouts_dir = THISDIR / "layouts"
+	_conf = {"author_name": conf.author_name, "resize_method": conf.resize_method}
 
 	for screen_type in SCREEN_TYPES:
 		layout_config: LayoutConfig = getattr(conf, screen_type, None)
@@ -137,7 +138,6 @@ def resolveConf(nxthemebin: str | None, conf: Config) -> Config:
 			msg = f"{conf[screen_type]} or {layout} does not exist :("
 			raise RuntimeError(msg)
 
-		_conf = {"author_name": conf.author_name, "resize_method": conf.resize_method}
 
 		_conf[screen_type] = LayoutConfig(layout=str(layout), mode=layout_config.mode)
 	return Config.model_validate(_conf)
@@ -215,3 +215,5 @@ def processImages(nxthemebin: str | None, inputdir: str, outputdir: str, config:
 					author_name=author_name,
 					out=out,
 				)
+
+	return config.model_dump()
